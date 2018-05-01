@@ -21,6 +21,10 @@ void printhello()
 	}
 }
 
+void readPassowd()
+{
+}
+
 /* space for additional code */
 void main(void)
 {
