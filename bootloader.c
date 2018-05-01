@@ -8,6 +8,13 @@ asm("jmp $0, $main");
 
 void print(char str[], int len)
 {
+	/*asm(
+		"add $48, %%al;"
+		"movb $0x0E, %%ah;"
+		"int $0x10;"
+	:
+	:"a"(len)
+	);*/
 	asm("movb $0x0E, %ah;");
 	for(long i = 0; i < len; i++)
 	{
@@ -25,9 +32,10 @@ void print(char str[], int len)
 		"movb $0x0E, %ah;"
 		"int $0x10;"
 	);
+	return;
 }
 
-//
+
 //int readPassowrd
 //int 0 password read
 //int 1 password empty
@@ -39,8 +47,8 @@ void readPassword()
 	int l;
 	asm(
 		"mov $0, %%si;"
-		"read:"
-		"movb $0x10, %%ah;"
+	"read:"
+		"movb $0x0, %%ah;"
 		"int $0x16;"
 
 		"cmp $13, %%al;"
@@ -57,10 +65,13 @@ void readPassword()
 		"jmp read;"
 		"int $0x10;"
 		"jmp read;"
-		"end:"
+	"end:"
+		//"push %%si;"
+		//"push %%bx;"
+		//"call %P0;" 
 		
 		: "=S"(l)
-		: "b"(in)
+		: "b"(in), "r"(print)
 	);
 	if(l == 0)
 	{
@@ -84,8 +95,11 @@ void readPassword()
 /* space for additional code */
 void main(void)
 {
-	print("Hello", 7);
-	readPassword();
+	print("Hello", 5);
+	while(1)
+	{
+		readPassword();
+	}
 	asm("jmp .");
 	
 }
