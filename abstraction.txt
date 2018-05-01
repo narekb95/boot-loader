@@ -1,0 +1,55 @@
+#ifndef _CODE16GCC_H_
+#define _CODE16GCC_H_
+asm(".code16gcc\n");
+#endif
+
+/* needs to stay the first line */
+asm("jmp $0, $main");
+
+/* space for additional code */
+
+void main()
+{
+	/*
+	char hello[] = "Hello!\n";
+	asm(
+	"mov $1, %%ax;" // system call
+	"mov $1, %%di;" // successful 
+	"int $0x10;"
+
+	:	/* no output registers */
+	:	"S"(hello),
+		"d"(sizeof(hello)-1)
+	);
+
+	asm("jmp .");
+	*/
+
+	printHello();
+	
+	char eingabe[9];
+	int i = 0;
+	int min = 0;
+	int emptyFlag = 1;
+	char input = eingabeChar();
+	while (input!='\n'&&i<9)
+	{
+		emptyFlag = 0;
+		eingabe[i] = input;
+		printPunkt();
+		i++;
+		input = eingabeChar();
+	}	
+	if (emptyFlag==0)
+	{
+		for (int j = 0; j<9&&eingabe[j]!='\n'; j++)
+		{
+			printChar(eingabe[j]);
+		}
+	}
+	else
+	{
+		neuStart();
+	}
+	
+}
