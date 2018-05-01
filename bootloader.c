@@ -41,8 +41,6 @@ void print(char str[], int len)
 //int 1 password empty
 void readPassword()
 {
-//while(1)
-{
 	char in[8];
 	int l;
 	asm(
@@ -89,7 +87,6 @@ void readPassword()
 		);
 	}
 	print(in, l);
-}
 }
 
 /* space for additional code */
