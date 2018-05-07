@@ -19,6 +19,7 @@ char ENTER = '\r';
 char password[8];
 int MAX_PASSWORD_LENGTH = 8;
 int passwordLength = 0;
+char lastChar;
 
 void println(char text[], int maxLength);
 void printLetter(char letter);
@@ -45,9 +46,7 @@ void println(char text[], int length) {
 
 int getPassword() {
 	passwordLength = 0;
-	while (1) {
-		char lastChar = readChar();
-		if (lastChar == ENTER) break;
+	while ((lastChar = readChar()) != ENTER) {
 		saveChar(lastChar);
 	}
 	println("", 0);
@@ -71,15 +70,12 @@ void printLetter(char letter) {
 	);
 }
 
-char readChar() {
-	printLetter((char)0x00); //SPACE
-	printLetter((char)0x08); //BACKSPACE
+char readChar() {	
 	char lastChar;
-	asm(
-		"movb $0x0, %%ah;"		//INT FCODE FOR KEYBOARD - GET KEYSTROKE
-        "int $0x16"
-		:"=al"(lastChar)
-		:
+	asm volatile (
+		"int $0x16"
+		: "=a"(lastChar)
+		: "a"((short) 0)
 	);
 	return lastChar;
 }
